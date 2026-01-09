@@ -1,0 +1,1745 @@
+<!DOCTYPE html>
+    <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Technical Architecture Organizational Structure Review</title>
+            <style>
+                * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                }
+                
+                body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+                padding: 40px 20px;
+                min-height: 100vh;
+                }
+                
+                .container {
+                max-width: 1400px;
+                margin: 0 auto;
+                background: white;
+                border-radius: 20px;
+                box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+                overflow: hidden;
+                }
+                
+                .header {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                padding: 50px 40px;
+                text-align: center;
+                }
+                
+                .header h1 {
+                font-size: 36px;
+                margin-bottom: 15px;
+                font-weight: 600;
+                }
+                
+                .header .subtitle {
+                font-size: 18px;
+                opacity: 0.95;
+                margin-bottom: 20px;
+                }
+                
+                .header .notice {
+                margin-top: 20px;
+                padding: 15px;
+                background: rgba(255, 255, 255, 0.2);
+                border-radius: 10px;
+                backdrop-filter: blur(10px);
+                font-size: 14px;
+                font-weight: 500;
+                }
+                
+                .content {
+                padding: 50px 40px;
+                }
+                
+                .executive-summary {
+                background: linear-gradient(135deg, #fff7ed 0%, #fed7aa 100%);
+                padding: 40px;
+                border-radius: 15px;
+                border: 3px solid #f97316;
+                margin-bottom: 50px;
+                }
+                
+                .executive-summary h2 {
+                font-size: 28px;
+                color: #9a3412;
+                margin-bottom: 25px;
+                display: flex;
+                align-items: center;
+                }
+                
+                .executive-summary h2::before {
+                content: '📋';
+                margin-right: 15px;
+                font-size: 32px;
+                }
+                
+                .summary-box {
+                background: white;
+                padding: 25px;
+                border-radius: 12px;
+                margin-bottom: 20px;
+                }
+                
+                .summary-box h3 {
+                font-size: 18px;
+                color: #9a3412;
+                margin-bottom: 15px;
+                font-weight: 600;
+                }
+                
+                .summary-box p {
+                font-size: 15px;
+                line-height: 1.8;
+                color: #78350f;
+                margin-bottom: 10px;
+                }
+                
+                .summary-box ul {
+                margin-left: 20px;
+                margin-top: 10px;
+                }
+                
+                .summary-box li {
+                font-size: 14px;
+                line-height: 1.7;
+                color: #78350f;
+                margin-bottom: 8px;
+                }
+                
+                .agenda {
+                background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+                padding: 35px;
+                border-radius: 15px;
+                border: 2px solid #22c55e;
+                margin-bottom: 50px;
+                }
+                
+                .agenda h2 {
+                font-size: 24px;
+                color: #166534;
+                margin-bottom: 20px;
+                display: flex;
+                align-items: center;
+                }
+                
+                .agenda h2::before {
+                content: '📑';
+                margin-right: 12px;
+                font-size: 28px;
+                }
+                
+                .agenda-item {
+                background: white;
+                padding: 15px 20px;
+                border-radius: 10px;
+                margin-bottom: 12px;
+                border-left: 4px solid #22c55e;
+                display: flex;
+                align-items: center;
+                }
+                
+                .agenda-number {
+                font-size: 20px;
+                font-weight: bold;
+                color: #22c55e;
+                margin-right: 15px;
+                min-width: 30px;
+                }
+                
+                .agenda-text {
+                font-size: 15px;
+                color: #166534;
+                font-weight: 500;
+                }
+                
+                .section-title {
+                font-size: 26px;
+                font-weight: 600;
+                margin: 50px 0 30px 0;
+                color: #2d3748;
+                display: flex;
+                align-items: center;
+                padding-bottom: 15px;
+                border-bottom: 3px solid #e2e8f0;
+                }
+                
+                .section-title::before {
+                content: '';
+                width: 6px;
+                height: 35px;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                margin-right: 15px;
+                border-radius: 3px;
+                }
+                
+                .metrics-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 25px;
+                margin-bottom: 40px;
+                }
+                
+                .metric-card {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                padding: 30px;
+                border-radius: 15px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+                transition: transform 0.3s ease;
+                }
+                
+                .metric-card:hover {
+                transform: translateY(-5px);
+                }
+                
+                .metric-card.warning {
+                background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+                }
+                
+                .metric-value {
+                font-size: 48px;
+                font-weight: bold;
+                margin: 10px 0;
+                }
+                
+                .metric-label {
+                font-size: 16px;
+                opacity: 0.95;
+                font-weight: 500;
+                }
+                
+                .comparison-section {
+                margin: 40px 0;
+                }
+                
+                .architect-comparison {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 30px;
+                margin: 30px 0;
+                }
+                
+                .architect-card {
+                background: #f8fafc;
+                border-radius: 15px;
+                padding: 30px;
+                border: 2px solid #e2e8f0;
+                }
+                
+                .architect-card.current {
+                border-color: #667eea;
+                background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+                }
+                
+                .architect-card.reporting {
+                border-color: #f5576c;
+                background: linear-gradient(135deg, rgba(245, 87, 108, 0.05) 0%, rgba(240, 147, 251, 0.05) 100%);
+                }
+                
+                .architect-name {
+                font-size: 22px;
+                font-weight: 600;
+                margin-bottom: 10px;
+                color: #2d3748;
+                }
+                
+                .architect-title {
+                font-size: 14px;
+                color: #718096;
+                margin-bottom: 20px;
+                font-weight: 500;
+                }
+                
+                .coverage-stat {
+                font-size: 48px;
+                font-weight: bold;
+                margin: 20px 0;
+                }
+                
+                .architect-card.current .coverage-stat {
+                color: #667eea;
+                }
+                
+                .architect-card.reporting .coverage-stat {
+                color: #f5576c;
+                }
+                
+                .area-list {
+                margin-top: 20px;
+                }
+                
+                .area-item {
+                background: white;
+                padding: 10px 15px;
+                margin: 6px 0;
+                border-radius: 8px;
+                font-size: 13px;
+                color: #4a5568;
+                border-left: 3px solid #cbd5e0;
+                }
+                
+                .architect-card.current .area-item {
+                border-left-color: #667eea;
+                }
+                
+                .architect-card.reporting .area-item {
+                border-left-color: #f5576c;
+                }
+                
+                .visual-chart {
+                margin: 40px 0;
+                padding: 30px;
+                background: #f8fafc;
+                border-radius: 15px;
+                }
+                
+                .chart-bars {
+                display: flex;
+                align-items: flex-end;
+                justify-content: space-around;
+                height: 300px;
+                margin: 30px 0;
+                }
+                
+                .bar-container {
+                text-align: center;
+                flex: 1;
+                max-width: 200px;
+                }
+                
+                .bar {
+                width: 100%;
+                background: linear-gradient(to top, #667eea 0%, #764ba2 100%);
+                border-radius: 10px 10px 0 0;
+                position: relative;
+                transition: all 0.3s ease;
+                }
+                
+                .bar:hover {
+                opacity: 0.8;
+                }
+                
+                .bar.small {
+                background: linear-gradient(to top, #f5576c 0%, #f093fb 100%);
+                }
+                
+                .bar-label {
+                margin-top: 15px;
+                font-weight: 600;
+                color: #2d3748;
+                font-size: 14px;
+                }
+                
+                .bar-value {
+                position: absolute;
+                top: -30px;
+                left: 50%;
+                transform: translateX(-50%);
+                font-weight: bold;
+                font-size: 18px;
+                color: #2d3748;
+                }
+                
+                .impact-section {
+                background: linear-gradient(135deg, #fff5f5 0%, #fed7d7 100%);
+                border-radius: 15px;
+                padding: 30px;
+                margin: 40px 0;
+                border: 2px solid #fc8181;
+                }
+                
+                .impact-title {
+                font-size: 20px;
+                font-weight: 600;
+                color: #c53030;
+                margin-bottom: 20px;
+                display: flex;
+                align-items: center;
+                }
+                
+                .impact-title::before {
+                content: '⚠️';
+                margin-right: 10px;
+                font-size: 24px;
+                }
+                
+                .impact-list {
+                list-style: none;
+                }
+                
+                .impact-item {
+                padding: 15px;
+                margin: 10px 0;
+                background: white;
+                border-radius: 8px;
+                color: #2d3748;
+                font-size: 15px;
+                line-height: 1.6;
+                }
+                
+                .impact-item::before {
+                content: '•';
+                color: #f5576c;
+                font-weight: bold;
+                font-size: 20px;
+                margin-right: 10px;
+                }
+                
+                @media (max-width: 768px) {
+                .architect-comparison {
+                grid-template-columns: 1fr;
+                }
+                
+                .metrics-grid {
+                grid-template-columns: 1fr;
+                }
+                
+                .content {
+                padding: 30px 20px;
+                }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <!-- ============================================ -->
+                <!-- SECTION B: HEADER & EXECUTIVE SUMMARY      -->
+                <!-- ============================================ -->
+                
+                <div class="header">
+                    <h1>Technical Architecture Organizational Structure Review</h1>
+                    <div class="subtitle">Impact Analysis & Data-Driven Recommendations</div>
+                    <div class="subtitle">Presented to: Marcus Bertilson COO</div>
+                    <div class="notice">
+                        📅 All achievements documented were delivered in 2025 calendar year under Principal Architect leadership
+                    </div>
+                </div>
+                
+                <div class="content">
+                    <!-- EXECUTIVE SUMMARY -->
+                    <div class="executive-summary">
+                        <h2>Executive Summary</h2>
+                        
+                        <div class="summary-box">
+                            <h3>Purpose</h3>
+                            <p>To present data regarding a proposed reporting structure change and its potential organizational impact, based on quantitative metrics, stakeholder feedback, historical precedent, and business outcomes from 2025.</p>
+                        </div>
+                        
+                        <div class="summary-box">
+                            <h3>Current Situation</h3>
+                            <p>The Principal Architect covering 93% of platform architecture (14/15 business areas) and performing 6 organizational roles simultaneously has been placed to report to a Technical Architect covering 7% of the platform (1/15 business areas) and performing a single role.</p>
+                        </div>
+                        
+                        <div class="summary-box">
+                            <h3>Key Concerns</h3>
+                            <ul>
+                                <li><strong>Coverage Disparity:</strong> 14:1 ratio in business area responsibility</li>
+                                <li><strong>Historical Failure:</strong> Same reporting structure tried previously (QA to US manager) resulted in quality degradation, visibility gaps, and undetected non-performance. When corrected (QA to India-based Principal), team transformed to high-performance</li>
+                                <li><strong>2025 Performance:</strong> $1M+ business value, 550+ deliveries, 4 platform transformations, 11 proactive POCs—all in single year</li>
+                                <li><strong>Stakeholder Impact:</strong> December 2025 peer feedback from 8 departments describes Principal as "invaluable," "critical," someone organization is "truly lucky to have"</li>
+                                <li><strong>Timezone Constraints:</strong> 9.5-12.5 hour gap will recreate communication delays that previously caused documented failures</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="summary-box">
+                            <h3>Business Impact at Risk</h3>
+                            <p><strong>Innovation velocity, stakeholder relationships, team performance, and proactive problem-solving capability</strong> that generated $1M+ value in 2025 may be constrained. The organization has concrete evidence from previous QA reporting structure that this model creates bottlenecks and visibility failures.</p>
+                        </div>
+                        
+                        <div class="summary-box">
+                            <h3>Recommendation</h3>
+                            <p>Review reporting structure decision against data: coverage metrics, 2025 performance outcomes, stakeholder feedback, historical precedent, and timezone operational realities. Three alternative structures proposed that align scope with reporting authority.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- END OF SECTION B -->
+                    <!DOCTYPE html>
+                    <html lang="en">
+                        <head>
+                            <meta charset="UTF-8">
+                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                            <title>Technical Architecture Coverage Analysis</title>
+                            <style>
+                                * {
+                                margin: 0;
+                                padding: 0;
+                                box-sizing: border-box;
+                                }
+                                
+                                body {
+                                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                                background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+                                padding: 40px 20px;
+                                min-height: 100vh;
+                                }
+                                
+                                .container {
+                                max-width: 1400px;
+                                margin: 0 auto;
+                                background: white;
+                                border-radius: 20px;
+                                box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+                                overflow: hidden;
+                                }
+                                
+                                .header {
+                                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                                color: white;
+                                padding: 40px;
+                                text-align: center;
+                                }
+                                
+                                .header h1 {
+                                font-size: 32px;
+                                margin-bottom: 10px;
+                                font-weight: 600;
+                                }
+                                
+                                .header p {
+                                font-size: 16px;
+                                opacity: 0.95;
+                                }
+                                
+                                .content {
+                                padding: 40px;
+                                }
+                                
+                                .metrics-grid {
+                                display: grid;
+                                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                                gap: 25px;
+                                margin-bottom: 50px;
+                                }
+                                
+                                .metric-card {
+                                background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+                                color: white;
+                                padding: 30px;
+                                border-radius: 15px;
+                                box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+                                transition: transform 0.3s ease;
+                                }
+                                
+                                .metric-card:hover {
+                                transform: translateY(-5px);
+                                }
+                                
+                                .metric-card.primary {
+                                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                                }
+                                
+                                .metric-card.warning {
+                                background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+                                }
+                                
+                                .metric-value {
+                                font-size: 48px;
+                                font-weight: bold;
+                                margin: 10px 0;
+                                }
+                                
+                                .metric-label {
+                                font-size: 16px;
+                                opacity: 0.95;
+                                font-weight: 500;
+                                }
+                                
+                                .comparison-section {
+                                margin: 40px 0;
+                                }
+                                
+                                .section-title {
+                                font-size: 24px;
+                                font-weight: 600;
+                                margin-bottom: 25px;
+                                color: #2d3748;
+                                display: flex;
+                                align-items: center;
+                                }
+                                
+                                .section-title::before {
+                                content: '';
+                                width: 4px;
+                                height: 30px;
+                                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                                margin-right: 15px;
+                                border-radius: 2px;
+                                }
+                                
+                                .architect-comparison {
+                                display: grid;
+                                grid-template-columns: 1fr 1fr;
+                                gap: 30px;
+                                margin-bottom: 40px;
+                                }
+                                
+                                .architect-card {
+                                background: #f8fafc;
+                                border-radius: 15px;
+                                padding: 30px;
+                                border: 2px solid #e2e8f0;
+                                }
+                                
+                                .architect-card.current {
+                                border-color: #667eea;
+                                background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+                                }
+                                
+                                .architect-card.reporting {
+                                border-color: #f5576c;
+                                background: linear-gradient(135deg, rgba(245, 87, 108, 0.05) 0%, rgba(240, 147, 251, 0.05) 100%);
+                                }
+                                
+                                .architect-name {
+                                font-size: 22px;
+                                font-weight: 600;
+                                margin-bottom: 10px;
+                                color: #2d3748;
+                                }
+                                
+                                .architect-title {
+                                font-size: 14px;
+                                color: #718096;
+                                margin-bottom: 20px;
+                                font-weight: 500;
+                                }
+                                
+                                .coverage-stat {
+                                font-size: 48px;
+                                font-weight: bold;
+                                margin: 20px 0;
+                                }
+                                
+                                .architect-card.current .coverage-stat {
+                                color: #667eea;
+                                }
+                                
+                                .architect-card.reporting .coverage-stat {
+                                color: #f5576c;
+                                }
+                                
+                                .area-list {
+                                margin-top: 20px;
+                                }
+                                
+                                .area-item {
+                                background: white;
+                                padding: 12px 15px;
+                                margin: 8px 0;
+                                border-radius: 8px;
+                                font-size: 14px;
+                                color: #4a5568;
+                                border-left: 3px solid #cbd5e0;
+                                }
+                                
+                                .architect-card.current .area-item {
+                                border-left-color: #667eea;
+                                }
+                                
+                                .architect-card.reporting .area-item {
+                                border-left-color: #f5576c;
+                                }
+                                
+                                .impact-section {
+                                background: linear-gradient(135deg, #fff5f5 0%, #fed7d7 100%);
+                                border-radius: 15px;
+                                padding: 30px;
+                                margin: 40px 0;
+                                border: 2px solid #fc8181;
+                                }
+                                
+                                .impact-title {
+                                font-size: 20px;
+                                font-weight: 600;
+                                color: #c53030;
+                                margin-bottom: 20px;
+                                display: flex;
+                                align-items: center;
+                                }
+                                
+                                .impact-title::before {
+                                content: '⚠️';
+                                margin-right: 10px;
+                                font-size: 24px;
+                                }
+                                
+                                .impact-list {
+                                list-style: none;
+                                }
+                                
+                                .impact-item {
+                                padding: 15px;
+                                margin: 10px 0;
+                                background: white;
+                                border-radius: 8px;
+                                color: #2d3748;
+                                font-size: 15px;
+                                line-height: 1.6;
+                                }
+                                
+                                .impact-item::before {
+                                content: '•';
+                                color: #f5576c;
+                                font-weight: bold;
+                                font-size: 20px;
+                                margin-right: 10px;
+                                }
+                                
+                                .visual-chart {
+                                margin: 40px 0;
+                                padding: 30px;
+                                background: #f8fafc;
+                                border-radius: 15px;
+                                }
+                                
+                                .chart-bars {
+                                display: flex;
+                                align-items: flex-end;
+                                justify-content: space-around;
+                                height: 300px;
+                                margin: 30px 0;
+                                }
+                                
+                                .bar-container {
+                                text-align: center;
+                                flex: 1;
+                                max-width: 200px;
+                                }
+                                
+                                .bar {
+                                width: 100%;
+                                background: linear-gradient(to top, #667eea 0%, #764ba2 100%);
+                                border-radius: 10px 10px 0 0;
+                                position: relative;
+                                transition: all 0.3s ease;
+                                }
+                                
+                                .bar:hover {
+                                opacity: 0.8;
+                                }
+                                
+                                .bar.small {
+                                background: linear-gradient(to top, #f5576c 0%, #f093fb 100%);
+                                }
+                                
+                                .bar-label {
+                                margin-top: 15px;
+                                font-weight: 600;
+                                color: #2d3748;
+                                font-size: 14px;
+                                }
+                                
+                                .bar-value {
+                                position: absolute;
+                                top: -30px;
+                                left: 50%;
+                                transform: translateX(-50%);
+                                font-weight: bold;
+                                font-size: 18px;
+                                color: #2d3748;
+                                }
+                                
+                                @media (max-width: 768px) {
+                                .architect-comparison {
+                                grid-template-columns: 1fr;
+                                }
+                                
+                                .metrics-grid {
+                                grid-template-columns: 1fr;
+                                }
+                                }
+                            </style>
+                        </head>
+                        <body>
+                            <div class="container">
+                                <div class="header">
+                                    <h1>Technical Architecture Coverage & Organizational Impact Analysis</h1>
+                                    <p>Reporting Structure Review - January 2026</p>
+                                    <div style="margin-top: 15px; padding: 15px; background: rgba(255, 255, 255, 0.2); border-radius: 10px; backdrop-filter: blur(10px);">
+                                        <p style="font-size: 14px; margin: 0; font-weight: 500;">
+                                            📅 All achievements documented below were delivered in 2025 calendar year under Principal Architect leadership
+                                        </p>
+                                    </div>
+                                </div>
+                                
+                                <div class="content">
+                                    <div class="metrics-grid">
+                                        <div class="metric-card primary">
+                                            <div class="metric-label">Total Business Areas</div>
+                                            <div class="metric-value">15</div>
+                                            <div class="metric-label">Under Technical Architecture</div>
+                                        </div>
+                                        
+                                        <div class="metric-card warning">
+                                            <div class="metric-label">Coverage Disparity</div>
+                                            <div class="metric-value">14:1</div>
+                                            <div class="metric-label">Area Responsibility Ratio</div>
+                                        </div>
+                                        
+                                        <div class="metric-card primary">
+                                            <div class="metric-label">Principal Salesforce Architect Coverage</div>
+                                            <div class="metric-value">93%</div>
+                                            <div class="metric-label">of All Business Areas</div>
+                                        </div>
+                                        
+                                        <div class="metric-card primary">
+                                            <div class="metric-label">Tenure & Growth</div>
+                                            <div class="metric-value">4.5yr</div>
+                                            <div class="metric-label">Senior Architect → Principal → Team Lead</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="comparison-section">
+                                        <h2 class="section-title">Career Progression & Expanding Responsibility</h2>
+                                        <div style="background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%); padding: 35px; border-radius: 15px; border: 2px solid #a855f7; margin-bottom: 40px;">
+                                            <div style="position: relative; padding-left: 30px;">
+                                                <div style="position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: linear-gradient(to bottom, #a855f7, #ec4899); border-radius: 2px;"></div>
+                                                
+                                                <div style="margin-bottom: 30px;">
+                                                    <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                                                        <div style="background: #a855f7; color: white; padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 600; margin-right: 15px;">August 2021</div>
+                                                        <h3 style="font-size: 18px; font-weight: 600; color: #581c87; margin: 0;">Senior Technical Architect</h3>
+                                                    </div>
+                                                    <p style="font-size: 14px; color: #6b21a8; line-height: 1.6; margin-left: 140px;">Joined to provide technical architecture expertise. Began leading India-based technical team.</p>
+                                                </div>
+                                                
+                                                <div style="margin-bottom: 30px;">
+                                                    <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                                                        <div style="background: #a855f7; color: white; padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 600; margin-right: 15px;">April 2024</div>
+                                                        <h3 style="font-size: 18px; font-weight: 600; color: #581c87; margin: 0;">Promoted to Principal Architect (Official Team Lead)</h3>
+                                                    </div>
+                                                    <p style="font-size: 14px; color: #6b21a8; line-height: 1.6; margin-left: 140px;">Officially recognized as Technical Team Lead. Scope expanded across 14 business areas covering enterprise platform architecture.</p>
+                                                </div>
+                                                
+                                                <div style="margin-bottom: 30px;">
+                                                    <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                                                        <div style="background: #ec4899; color: white; padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 600; margin-right: 15px;">May 2024</div>
+                                                        <h3 style="font-size: 18px; font-weight: 600; color: #581c87; margin: 0;">Assumed QA Leadership (Additional Responsibility)</h3>
+                                                    </div>
+                                                    <div style="margin-left: 140px;">
+                                                        <p style="font-size: 14px; color: #6b21a8; line-height: 1.6; margin-bottom: 12px;">Took ownership of 5-person QA team after previous manager departed. Delivered:</p>
+                                                        <div style="display: grid; gap: 10px;">
+                                                            <div style="background: white; padding: 12px 15px; border-radius: 8px; border-left: 3px solid #a855f7; font-size: 13px; color: #581c87;">
+                                                                ✓ Full Lead-to-Cash regression automation suite implementation
+                                                            </div>
+                                                            <div style="background: white; padding: 12px 15px; border-radius: 8px; border-left: 3px solid #a855f7; font-size: 13px; color: #581c87;">
+                                                                ✓ Stabilized QA delivery during critical staffing transition
+                                                            </div>
+                                                            <div style="background: white; padding: 12px 15px; border-radius: 8px; border-left: 3px solid #a855f7; font-size: 13px; color: #581c87;">
+                                                                ✓ Transformed QA from bottleneck to delivery enabler
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div>
+                                                    <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                                                        <div style="background: #ec4899; color: white; padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 600; margin-right: 15px;">2024-2025</div>
+                                                        <h3 style="font-size: 18px; font-weight: 600; color: #581c87; margin: 0;">Strategic Business Transformation</h3>
+                                                    </div>
+                                                    <div style="margin-left: 140px;">
+                                                        <p style="font-size: 14px; color: #6b21a8; line-height: 1.6; margin-bottom: 12px;">Delivered multiple high-impact initiatives working extensive hours:</p>
+                                                        <div style="display: grid; gap: 10px;">
+                                                            <div style="background: white; padding: 12px 15px; border-radius: 8px; border-left: 3px solid #ec4899; font-size: 13px; color: #581c87;">
+                                                                <strong>Custom Integration Framework:</strong> 3-week POC replacing MuleSoft, saving ~$200K annually
+                                                            </div>
+                                                            <div style="background: white; padding: 12px 15px; border-radius: 8px; border-left: 3px solid #ec4899; font-size: 13px; color: #581c87;">
+                                                                <strong>Employee Access Management:</strong> Automated system access provisioning with approval workflows
+                                                            </div>
+                                                            <div style="background: white; padding: 12px 15px; border-radius: 8px; border-left: 3px solid #ec4899; font-size: 13px; color: #581c87;">
+                                                                <strong>Billing Overview Dashboard:</strong> Proactive solution elevating user experience across organization
+                                                            </div>
+                                                            <div style="background: white; padding: 12px 15px; border-radius: 8px; border-left: 3px solid #ec4899; font-size: 13px; color: #581c87;">
+                                                                <strong>SoX Compliance Automation:</strong> Automated quarterly audit process for governance
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div style="margin-top: 30px; padding: 25px; background: rgba(168, 85, 247, 0.1); border-radius: 12px; border: 2px dashed #a855f7;">
+                                                <h4 style="font-size: 16px; font-weight: 600; color: #581c87; margin-bottom: 12px;">📈 Trajectory Analysis</h4>
+                                                <p style="font-size: 15px; line-height: 1.7; color: #6b21a8; margin: 0;">
+                                                    Over 3.4 years, demonstrated consistent upward trajectory: Senior Architect → Principal Architect → Official Team Lead → QA Leadership → Strategic Business Partner. Scope expanded from technical architecture to include team management, QA ownership, proactive business innovation, and cost optimization—all while maintaining 93% platform coverage across 14 business areas.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="comparison-section">
+                                        <h2 class="section-title">Architecture, Delivery, People Management & Project Leadership Comparison</h2>
+                                        
+                                        <div style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); padding: 20px; border-radius: 12px; border: 2px solid #f59e0b; margin-bottom: 25px;">
+                                            <p style="font-size: 14px; line-height: 1.7; color: #78350f; margin: 0;">
+                                                <strong>⚠️ Important Context:</strong> The Principal Architect currently performs multiple critical roles simultaneously—Architecture, Delivery Leadership, People Management, Project Management, and Scrum Master responsibilities—without being asked about aspirations or given role choice. The comparison below reflects the full scope of actual responsibilities being performed.
+                                            </p>
+                                        </div>
+                                        
+                                        <div class="architect-comparison">
+                                            <div class="architect-card current">
+                                                <div class="architect-name">Sandeep Kumar</div>
+                                                <div class="architect-title">Salesforce Principal Architect (Current Multi-Role Reality)</div>
+                                                
+                                                <div style="background: rgba(102, 126, 234, 0.1); padding: 15px; border-radius: 8px; margin: 15px 0;">
+                                                    <div style="font-size: 13px; font-weight: 600; color: #667eea; margin-bottom: 8px;">ROLES CURRENTLY PERFORMED:</div>
+                                                    <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                                                        <span style="background: #667eea; color: white; padding: 5px 12px; border-radius: 15px; font-size: 12px; font-weight: 500;">Principal Architect</span>
+                                                        <span style="background: #667eea; color: white; padding: 5px 12px; border-radius: 15px; font-size: 12px; font-weight: 500;">Technical Team Lead</span>
+                                                        <span style="background: #667eea; color: white; padding: 5px 12px; border-radius: 15px; font-size: 12px; font-weight: 500;">QA Manager</span>
+                                                        <span style="background: #667eea; color: white; padding: 5px 12px; border-radius: 15px; font-size: 12px; font-weight: 500;">Project Manager</span>
+                                                        <span style="background: #667eea; color: white; padding: 5px 12px; border-radius: 15px; font-size: 12px; font-weight: 500;">Scrum Master</span>
+                                                        <span style="background: #667eea; color: white; padding: 5px 12px; border-radius: 15px; font-size: 12px; font-weight: 500;">Delivery Lead</span>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="coverage-stat">14/15</div>
+                                                <div class="metric-label">Business Areas Covered (93%)</div>
+                                                
+                                                <div class="area-list">
+                                                    <div class="area-item">Marketing/Demand Generation</div>
+                                                    <div class="area-item">Channel Partners</div>
+                                                    <div class="area-item">Integration/Strategic Partnerships</div>
+                                                    <div class="area-item">Payments</div>
+                                                    <div class="area-item">Onboarding</div>
+                                                    <div class="area-item">Customer Success/CES</div>
+                                                    <div class="area-item">People</div>
+                                                    <div class="area-item">Accounting</div>
+                                                    <div class="area-item">Finance</div>
+                                                    <div class="area-item">Legal</div>
+                                                    <div class="area-item">Product</div>
+                                                    <div class="area-item">Pricing & Packaging</div>
+                                                    <div class="area-item">Product Marketing</div>
+                                                    <div class="area-item">CX/Billing Support (Shared)</div>
+                                                </div>
+                                                
+                                                <div style="margin-top: 15px; padding: 12px; background: rgba(102, 126, 234, 0.1); border-radius: 8px;">
+                                                    <div style="font-size: 12px; color: #667eea; font-weight: 600; margin-bottom: 5px;">ADDITIONAL CONTEXT:</div>
+                                                    <div style="font-size: 12px; color: #4c1d95; line-height: 1.6;">
+                                                        Performing all roles without role choice or aspiration discussion. Managing India-based team with same-timezone alignment enabling real-time collaboration and issue resolution.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="architect-card reporting">
+                                                <div class="architect-name">Paco Garcia</div>
+                                                <div class="architect-title">Technical Architect (New Reporting Manager)</div>
+                                                
+                                                <div style="background: rgba(245, 87, 108, 0.1); padding: 15px; border-radius: 8px; margin: 15px 0;">
+                                                    <div style="font-size: 13px; font-weight: 600; color: #f5576c; margin-bottom: 8px;">ROLES PERFORMED:</div>
+                                                    <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                                                        <span style="background: #f5576c; color: white; padding: 5px 12px; border-radius: 15px; font-size: 12px; font-weight: 500;">Technical Architect</span>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="coverage-stat">1/15</div>
+                                                <div class="metric-label">Business Areas Covered (7%)</div>
+                                                
+                                                <div class="area-list">
+                                                    <div class="area-item">CX/Billing Support (Sole Coverage)</div>
+                                                </div>
+                                                
+                                                <div style="margin-top: 15px; padding: 12px; background: rgba(245, 87, 108, 0.1); border-radius: 8px;">
+                                                    <div style="font-size: 12px; color: #f5576c; font-weight: 600; margin-bottom: 5px;">ADDITIONAL CONTEXT:</div>
+                                                    <div style="font-size: 12px; color: #7f1d1d; line-height: 1.6;">
+                                                        Single technical architecture role. US-based with significant timezone gap from India team (9.5-12.5 hours), creating communication delays and real-time collaboration constraints.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="visual-chart">
+                                        <h2 class="section-title">Visual Coverage Comparison</h2>
+                                        <div class="chart-bars">
+                                            <div class="bar-container">
+                                                <div class="bar" style="height: 280px;">
+                                                    <div class="bar-value">14</div>
+                                                </div>
+                                                <div class="bar-label">Sandeep Kumar<br>Principal Architect</div>
+                                            </div>
+                                            <div class="bar-container">
+                                                <div class="bar small" style="height: 20px;">
+                                                    <div class="bar-value">1</div>
+                                                </div>
+                                                <div class="bar-label">Paco Garcia<br>Technical Architect</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="impact-section">
+                                        <div class="impact-title">Organizational Impact & Risk Assessment</div>
+                                        <ul class="impact-list">
+                                            <li class="impact-item"><strong>Inverted Growth Trajectory:</strong> An architect who has demonstrated 3.4 years of consistent upward mobility (Senior → Principal → Team Lead → QA Lead), expanding from technical architecture to strategic business partnership, now reports to someone with a narrower scope and less organizational tenure in leadership.</li>
+                                            
+                                            <li class="impact-item"><strong>Multi-Role Overload Without Recognition:</strong> The Principal Architect simultaneously performs 6 distinct roles (Principal Architect, Technical Team Lead, QA Manager, Project Manager, Scrum Master, Delivery Lead) without being asked about career aspirations or given role choice. Despite this extensive responsibility, the reporting structure suggests these contributions are valued less than single-role coverage of 7% of the platform.</li>
+                                            
+                                            <li class="impact-item"><strong>Proven Crisis Leadership:</strong> Successfully navigated chronic team under-utilization throughout the year and QA staffing reduction from 5 to 1 engineer, yet still delivered 550+ stories, 8 proactive POCs, 4 platform transformations, and $1M+ in business value. This level of resourcefulness and crisis management capability is rare and should be protected, not constrained.</li>
+                                            
+                                            <li class="impact-item"><strong>Repeating Historical Failures:</strong> When QA reported to US management previously, the organization experienced quality degradation, speed issues, visibility gaps (team member working from London undetected), and non-performance without detection. After QA reported to the Principal Architect (May 2024), these issues were immediately identified and corrected, resulting in transformation to high-performing team. The proposed structure recreates the exact same timezone and management distance issues that previously caused documented failures.</li>
+                                            
+                                            <li class="impact-item"><strong>Timezone & Collaboration Constraints:</strong> Moving a high-performing India-based team under US-based management reintroduces 9.5-12.5 hour timezone gaps that will create communication delays, slow real-time issue resolution, and reduce the immediate visibility that enabled current performance levels. This directly contradicts lessons learned from previous QA reporting structure failure.</li>
+                                            
+                                            <li class="impact-item"><strong>Expertise Misalignment:</strong> A Principal Architect with enterprise-wide platform knowledge across 14 business areas, who successfully took over and stabilized a 5-person QA team, now reports to a Technical Architect with single-area domain expertise and no demonstrated multi-team leadership.</li>
+                                            
+                                            <li class="impact-item"><strong>Decision-Making Bottleneck:</strong> Strategic architectural decisions spanning Marketing, Payments, Finance, Legal, Product, Customer Success, and other critical business functions now require approval from someone with limited visibility into these areas.</li>
+                                            
+                                            <li class="impact-item"><strong>Innovation Risk:</strong> The Principal Architect has consistently delivered proactive, self-initiated solutions that generated significant business value without formal requirements (Price Increase Automation saving $800K ARR, Quick Quote reducing close time to 4 minutes, Custom Integration Framework saving $200K annually, Consolidated Billing eliminating manual effort). This entrepreneurial approach—turning under-utilization into value creation—requires autonomy that may be constrained under inappropriate reporting.</li>
+                                            
+                                            <li class="impact-item"><strong>Process Excellence Loss:</strong> The Principal Architect built processes enabling the team to perform at maximum potential with zero flaws in Design, Development, Delivery, or Quality. This process maturity and team optimization capability took years to develop and may be disrupted by reporting structure changes.</li>
+                                            
+                                            <li class="impact-item"><strong>Cost Optimization Impact:</strong> Initiatives like the 3-week Custom Integration POC (vs MuleSoft's 1+ year timeline) that saved ~$200K annually were delivered through extensive hours and deep cross-functional understanding. Requiring approval layers from someone without this context may slow or prevent similar future optimizations.</li>
+                                            
+                                            <li class="impact-item"><strong>Team Leadership Disruption:</strong> Having successfully led both the Technical team and QA team (5 engineers), providing unwavering support and advocacy, the Principal Architect has established credibility and delivery momentum. Introducing a reporting layer with narrower scope may create confusion in team dynamics and decision authority.</li>
+                                            
+                                            <li class="impact-item"><strong>Knowledge Transfer Risk:</strong> The organization's most comprehensive technical knowledge holder (93% coverage, 3.4 years institutional knowledge) is subordinated to someone with 7% coverage, creating potential knowledge silos and communication gaps.</li>
+                                            
+                                            <li class="impact-item"><strong>Stakeholder Relationship Disruption:</strong> Recent peer feedback (December 2025) from 8 different departments consistently describes the Principal Architect as "invaluable," "critical member," someone the organization is "truly lucky to have," with several stakeholders explicitly stating they could not identify any areas for improvement. These deep, trusted cross-functional partnerships spanning Pricing, Customer Success, Supply Chain, Finance, SOX Compliance, and Analytics took years to build and may be disrupted by reporting structure changes that create confusion about decision authority.</li>
+                                            
+                                            <li class="impact-item"><strong>Career Progression Anomaly:</strong> This structure contradicts the demonstrated trajectory of expanding responsibility and creates a career regression that may impact retention of high-performing technical leaders who deliver exceptional results despite resource constraints.</li>
+                                            
+                                            <li class="impact-item"><strong>Scalability Concern:</strong> As the business grows, having 93% of technical architecture decisions filtered through someone covering 7% of the platform creates an unsustainable operational model.</li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div class="comparison-section">
+                                        <h2 class="section-title">Technical Leadership & Platform Transformation</h2>
+                                        <div style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); padding: 35px; border-radius: 15px; border: 2px solid #22c55e; margin-bottom: 40px;">
+                                            <div style="background: rgba(34, 197, 94, 0.2); padding: 15px; border-radius: 10px; margin-bottom: 20px; border: 2px dashed #22c55e;">
+                                                <h3 style="font-size: 18px; font-weight: 600; color: #166534; margin: 0; text-align: center;">
+                                                    ⏱️ All Achievements Below Delivered in 2025 Calendar Year Only
+                                                </h3>
+                                            </div>
+                                            
+                                            <h3 style="font-size: 20px; font-weight: 600; color: #166534; margin-bottom: 20px;">Major Platform Achievements Under Principal Architect Leadership (2025)</h3>
+                                            <p style="font-size: 14px; color: #15803d; margin-bottom: 25px; line-height: 1.7;">
+                                                All initiatives below were delivered within a single calendar year under the Principal Architect's leadership, with direct contribution to design, development strategy, and delivery execution while maintaining ongoing business project delivery.
+                                            </p>
+                                            
+                                            <div style="display: grid; gap: 20px;">
+                                                <div style="background: white; padding: 25px; border-radius: 12px; border-left: 5px solid #22c55e;">
+                                                    <h4 style="font-size: 17px; font-weight: 600; color: #166534; margin-bottom: 12px;">🎯 End-to-End Regression Automation Suite</h4>
+                                                    <p style="font-size: 14px; color: #15803d; line-height: 1.7; margin-bottom: 12px;">
+                                                        Built complete Lead-to-Cash automation framework from scratch covering Lead Conversion, Opportunity workflows, Quote creation, Order processing, Account onboarding, Contract activation, and Invoice generation.
+                                                    </p>
+                                                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 15px;">
+                                                        <div style="background: #f0fdf4; padding: 12px; border-radius: 8px;">
+                                                            <div style="font-size: 24px; font-weight: bold; color: #22c55e;">33-35min</div>
+                                                            <div style="font-size: 12px; color: #15803d;">Full Cycle Runtime</div>
+                                                        </div>
+                                                        <div style="background: #f0fdf4; padding: 12px; border-radius: 8px;">
+                                                            <div style="font-size: 24px; font-weight: bold; color: #22c55e;">Daily</div>
+                                                            <div style="font-size: 12px; color: #15803d;">QA & UAT Execution</div>
+                                                        </div>
+                                                        <div style="background: #f0fdf4; padding: 12px; border-radius: 8px;">
+                                                            <div style="font-size: 24px; font-weight: bold; color: #22c55e;">0→100%</div>
+                                                            <div style="font-size: 12px; color: #15803d;">Coverage Achievement</div>
+                                                        </div>
+                                                    </div>
+                                                    <p style="font-size: 13px; color: #166534; margin-top: 12px; font-style: italic;">
+                                                        Framework built with Playwright (new technology for team), delivered by Vishnu Nair while maintaining functional QA responsibilities across parallel projects.
+                                                    </p>
+                                                </div>
+                                                
+                                                <div style="background: white; padding: 25px; border-radius: 12px; border-left: 5px solid #3b82f6;">
+                                                    <h4 style="font-size: 17px; font-weight: 600; color: #1e40af; margin-bottom: 12px;">🔧 Platform Health & Code Coverage Initiative</h4>
+                                                    <p style="font-size: 14px; color: #1e40af; line-height: 1.7; margin-bottom: 12px;">
+                                                        Led team to achieve Run All Tests readiness across all environments, executing 1,500+ test classes daily with real-time dependency visibility and change impact validation.
+                                                    </p>
+                                                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 15px;">
+                                                        <div style="background: #eff6ff; padding: 12px; border-radius: 8px;">
+                                                            <div style="font-size: 24px; font-weight: bold; color: #3b82f6;">~90%</div>
+                                                            <div style="font-size: 12px; color: #1e40af;">Code Coverage Achieved</div>
+                                                        </div>
+                                                        <div style="background: #eff6ff; padding: 12px; border-radius: 8px;">
+                                                            <div style="font-size: 24px; font-weight: bold; color: #3b82f6;">1,500+</div>
+                                                            <div style="font-size: 12px; color: #1e40af;">Daily Test Executions</div>
+                                                        </div>
+                                                        <div style="background: #eff6ff; padding: 12px; border-radius: 8px;">
+                                                            <div style="font-size: 24px; font-weight: bold; color: #3b82f6;">67%</div>
+                                                            <div style="font-size: 12px; color: #1e40af;">Org Code Utilization</div>
+                                                        </div>
+                                                    </div>
+                                                    <p style="font-size: 13px; color: #1e40af; margin-top: 12px; font-style: italic;">
+                                                        Driven by Aishwarya Shete and Deepak Sharma with collaborative stabilization efforts, including cross-team test class fixes.
+                                                    </p>
+                                                </div>
+                                                
+                                                <div style="background: white; padding: 25px; border-radius: 12px; border-left: 5px solid #f59e0b;">
+                                                    <h4 style="font-size: 17px; font-weight: 600; color: #92400e; margin-bottom: 12px;">⚙️ Legacy Automation Migration & Modernization</h4>
+                                                    <p style="font-size: 14px; color: #92400e; line-height: 1.7; margin-bottom: 12px;">
+                                                        Successfully deprecated 200+ legacy Process Builders and Workflow Rules, migrating to modern Salesforce Flow architecture. Upgraded all Apex classes to API version 60+ ensuring long-term platform supportability.
+                                                    </p>
+                                                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 15px;">
+                                                        <div style="background: #fffbeb; padding: 12px; border-radius: 8px;">
+                                                            <div style="font-size: 24px; font-weight: bold; color: #f59e0b;">200+</div>
+                                                            <div style="font-size: 12px; color: #92400e;">Automations Migrated</div>
+                                                        </div>
+                                                        <div style="background: #fffbeb; padding: 12px; border-radius: 8px;">
+                                                            <div style="font-size: 24px; font-weight: bold; color: #f59e0b;">100%</div>
+                                                            <div style="font-size: 12px; color: #92400e;">Zero Disruption</div>
+                                                        </div>
+                                                        <div style="background: #fffbeb; padding: 12px; border-radius: 8px;">
+                                                            <div style="font-size: 24px; font-weight: bold; color: #f59e0b;">API 60+</div>
+                                                            <div style="font-size: 12px; color: #92400e;">Platform Modernization</div>
+                                                        </div>
+                                                    </div>
+                                                    <p style="font-size: 13px; color: #92400e; margin-top: 12px; font-style: italic;">
+                                                        Cross-functional effort involving Derek Nelson, Katherine Donguines, Vikram Dhongade, Deepak Sharma, Aishwarya Shete, Bhumika Deo, Christian Abellansoa, Chris Sundholm, and Trevor Taylor.
+                                                    </p>
+                                                </div>
+                                                
+                                                <div style="background: white; padding: 25px; border-radius: 12px; border-left: 5px solid #8b5cf6;">
+                                                    <h4 style="font-size: 17px; font-weight: 600; color: #6b21a8; margin-bottom: 12px;">📊 Real-Time Observability & Alerting Framework</h4>
+                                                    <p style="font-size: 14px; color: #6b21a8; line-height: 1.7; margin-bottom: 12px;">
+                                                        Designed and implemented comprehensive Slack-based alerting infrastructure providing autopilot monitoring for integrations, automations, test health, and platform exceptions.
+                                                    </p>
+                                                    <div style="margin-top: 15px; display: grid; gap: 10px;">
+                                                        <div style="background: #faf5ff; padding: 12px 15px; border-radius: 8px; font-size: 13px; color: #6b21a8;">
+                                                            <strong>#sf-testing-hub:</strong> Daily regression results, Allure reports, org-wide test execution & coverage
+                                                        </div>
+                                                        <div style="background: #faf5ff; padding: 12px 15px; border-radius: 8px; font-size: 13px; color: #6b21a8;">
+                                                            <strong>#sf-integration-alerts:</strong> Integration health & failure notifications with retry tracking
+                                                        </div>
+                                                        <div style="background: #faf5ff; padding: 12px 15px; border-radius: 8px; font-size: 13px; color: #6b21a8;">
+                                                            <strong>#sf-dml-exceptions-alerts:</strong> Automation & platform health signals for proactive issue detection
+                                                        </div>
+                                                    </div>
+                                                    <p style="font-size: 13px; color: #6b21a8; margin-top: 12px; font-style: italic;">
+                                                        Result: Improved release confidence, faster issue detection, enhanced platform stability—all operating autonomously.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            
+                                            <div style="margin-top: 30px; padding: 25px; background: rgba(34, 197, 94, 0.1); border-radius: 12px; border: 2px dashed #22c55e;">
+                                                <h4 style="font-size: 16px; font-weight: 600; color: #166534; margin-bottom: 12px;">🎯 Leadership Impact Summary</h4>
+                                                <p style="font-size: 15px; line-height: 1.7; color: #15803d; margin-bottom: 12px;">
+                                                    All initiatives delivered under Principal Architect's leadership through:
+                                                </p>
+                                                <ul style="margin: 0; padding-left: 20px;">
+                                                    <li style="font-size: 14px; line-height: 1.7; color: #15803d; margin-bottom: 6px;">Strategic design guidance and architecture decisions</li>
+                                                    <li style="font-size: 14px; line-height: 1.7; color: #15803d; margin-bottom: 6px;">Development roadmap prioritization and execution oversight</li>
+                                                    <li style="font-size: 14px; line-height: 1.7; color: #15803d; margin-bottom: 6px;">Cross-team coordination and delivery leadership</li>
+                                                    <li style="font-size: 14px; line-height: 1.7; color: #15803d; margin-bottom: 6px;">Technical problem-solving and unblocking complex challenges</li>
+                                                    <li style="font-size: 14px; line-height: 1.7; color: #15803d; margin-bottom: 6px;">Maintained parallel delivery of 550+ business-critical user stories</li>
+                                                    <li style="font-size: 14px; line-height: 1.7; color: #15803d;">Team advocacy, support, and process optimization for maximum potential</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="comparison-section">
+                                        <h2 class="section-title">Peer Recognition & Stakeholder Feedback (December 2025)</h2>
+                                        <div style="background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%); padding: 35px; border-radius: 15px; border: 2px solid #a855f7; margin-bottom: 40px;">
+                                            <h3 style="font-size: 20px; font-weight: 600; color: #581c87; margin-bottom: 20px;">💬 Cross-Functional Stakeholder Testimonials</h3>
+                                            <p style="font-size: 14px; color: #6b21a8; margin-bottom: 25px; line-height: 1.7;">
+                                                Recent feedback from business partners across multiple departments demonstrates consistent themes: deep expertise, responsiveness, collaboration, business impact, and critical value to the organization.
+                                            </p>
+                                            
+                                            <div style="display: grid; gap: 20px;">
+                                                <div style="background: white; padding: 20px; border-radius: 12px; border-left: 4px solid #a855f7;">
+                                                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
+                                                        <div>
+                                                            <div style="font-weight: 600; color: #581c87; font-size: 15px;">Jason Alleger - Pricing & Packaging</div>
+                                                            <div style="font-size: 12px; color: #6b21a8;">Key Stakeholder</div>
+                                                        </div>
+                                                        <div style="font-size: 11px; color: #9333ea; background: #faf5ff; padding: 4px 10px; border-radius: 12px;">Dec 16, 2025</div>
+                                                    </div>
+                                                    <p style="font-size: 14px; color: #4c1d95; line-height: 1.7; margin: 0;">
+                                                        <strong>"Sandeep is an absolute pleasure to work with. He gives a ton of confidence to me in the projects I run that are dependent on systems."</strong> ... "I can see the impact Sandeep is having, especially with his expanded role. Better on-time delivery, higher quality, etc. I like that systems is committing to a date and hitting it."
+                                                    </p>
+                                                </div>
+                                                
+                                                <div style="background: white; padding: 20px; border-radius: 12px; border-left: 4px solid #22c55e;">
+                                                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
+                                                        <div>
+                                                            <div style="font-weight: 600; color: #166534; font-size: 15px;">Taylor Schaller - Customer Success (MM/Enterprise)</div>
+                                                            <div style="font-size: 12px; color: #15803d;">Key Stakeholder</div>
+                                                        </div>
+                                                        <div style="font-size: 11px; color: #22c55e; background: #f0fdf4; padding: 4px 10px; border-radius: 12px;">Dec 9, 2025</div>
+                                                    </div>
+                                                    <p style="font-size: 14px; color: #166534; line-height: 1.7; margin: 0;">
+                                                        <strong>"Sandeep gathered our examples and pain points, asked clarifying questions, and quickly developed improved workflows and data structures, often delivering solutions within just a few days."</strong> ... "His responsiveness, collaborative approach, and ability to turn feedback into impactful solutions made a huge difference." ... "Within three days, he had a version available for testing. This automation will save me hours every month."
+                                                    </p>
+                                                </div>
+                                                
+                                                <div style="background: white; padding: 20px; border-radius: 12px; border-left: 4px solid #0ea5e9;">
+                                                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
+                                                        <div>
+                                                            <div style="font-weight: 600; color: #0c4a6e; font-size: 15px;">Reid Dwiggins - Supply Chain</div>
+                                                            <div style="font-size: 12px; color: #0369a1;">Key Stakeholder</div>
+                                                        </div>
+                                                        <div style="font-size: 11px; color: #0ea5e9; background: #f0f9ff; padding: 4px 10px; border-radius: 12px;">Dec 9, 2025</div>
+                                                    </div>
+                                                    <p style="font-size: 14px; color: #0c4a6e; line-height: 1.7; margin: 0;">
+                                                        <strong>"Sandeep has an excellent way of being available and willing to assist the supply chain team at all moments. He understands business priority while also being able to pivot and see the needs of other departments."</strong> ... "Sandeep was able to assist and pivot a lot with different time setbacks and was able to have the work from the business systems team completed on time and in budget to our initial request." ... <strong>"We need more teams like Sandeep's."</strong>
+                                                    </p>
+                                                </div>
+                                                
+                                                <div style="background: white; padding: 20px; border-radius: 12px; border-left: 4px solid #f59e0b;">
+                                                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
+                                                        <div>
+                                                            <div style="font-weight: 600; color: #92400e; font-size: 15px;">Maile Lauret - Tax/Finance</div>
+                                                            <div style="font-size: 12px; color: #78350f;">Key Stakeholder</div>
+                                                        </div>
+                                                        <div style="font-size: 11px; color: #f59e0b; background: #fffbeb; padding: 4px 10px; border-radius: 12px;">Dec 1, 2025</div>
+                                                    </div>
+                                                    <p style="font-size: 14px; color: #92400e; line-height: 1.7; margin: 0;">
+                                                        <strong>"Sandeep diligently worked to understand the complexities of my request and translated them into a user-friendly algorithm for the estimator. Sandeep proactively sought feedback on the estimator's accuracy and iterated to ensure it aligned with what was needed. This made a huge impact on my workflow and ultimately created a much better user experience for our customers."</strong> ... "He meticulously analyzed the data through several iterations until we were able to verify our numbers."
+                                                    </p>
+                                                </div>
+                                                
+                                                <div style="background: white; padding: 20px; border-radius: 12px; border-left: 4px solid #ec4899;">
+                                                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
+                                                        <div>
+                                                            <div style="font-weight: 600; color: #9f1239; font-size: 15px;">Jared Bolz - SOX Compliance/Audit</div>
+                                                            <div style="font-size: 12px; color: #be123c;">Key Stakeholder</div>
+                                                        </div>
+                                                        <div style="font-size: 11px; color: #ec4899; background: #fdf2f8; padding: 4px 10px; border-radius: 12px;">Dec 18, 2025</div>
+                                                    </div>
+                                                    <p style="font-size: 14px; color: #9f1239; line-height: 1.7; margin: 0;">
+                                                        <strong>"He is an invaluable member of the team and had deep knowledge that is required for Weave to explain system configurations and processes. He has been very helpful and responsive for all requests made related to audit and controls."</strong> ... "I cannot think of any things Sandeep could do differently. I genuinely feel he is great to work with and critical member of the Weave Workforce."
+                                                    </p>
+                                                </div>
+                                                
+                                                <div style="background: white; padding: 20px; border-radius: 12px; border-left: 4px solid #8b5cf6;">
+                                                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
+                                                        <div>
+                                                            <div style="font-weight: 600; color: #6b21a8; font-size: 15px;">BB Beckmann - Analytics</div>
+                                                            <div style="font-size: 12px; color: #7c3aed;">Key Stakeholder</div>
+                                                        </div>
+                                                        <div style="font-size: 11px; color: #8b5cf6; background: #faf5ff; padding: 4px 10px; border-radius: 12px;">Dec 2, 2025</div>
+                                                    </div>
+                                                    <p style="font-size: 14px; color: #6b21a8; line-height: 1.7; margin: 0;">
+                                                        <strong>"Sandeep is always willing to go above and beyond to help my Analysts even during his non working hours. The work he does is so important and we are truly lucky to have him."</strong> ... "Sandeep is always willing to help us better understand situations we run into with Salesforce so that we know what may have caused the issue to begin with so we can avoid it in the future."
+                                                    </p>
+                                                </div>
+                                                
+                                                <div style="background: white; padding: 20px; border-radius: 12px; border-left: 4px solid #06b6d4;">
+                                                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
+                                                        <div>
+                                                            <div style="font-weight: 600; color: #164e63; font-size: 15px;">Vibha Mehta - Direct Report (Team Member)</div>
+                                                            <div style="font-size: 12px; color: #155e75;">Team Leadership Feedback</div>
+                                                        </div>
+                                                        <div style="font-size: 11px; color: #06b6d4; background: #ecfeff; padding: 4px 10px; border-radius: 12px;">Dec 10, 2025</div>
+                                                    </div>
+                                                    <p style="font-size: 14px; color: #164e63; line-height: 1.7; margin: 0;">
+                                                        <strong>"Mostly liked about my manager is Transparent and effective communication style. He demonstrated very encouraging behavior towards team."</strong> ... "So far I did not feel any [lack of support], instead I felt he is very supportive with the team."
+                                                    </p>
+                                                </div>
+                                                
+                                                <div style="background: white; padding: 20px; border-radius: 12px; border-left: 4px solid #84cc16;">
+                                                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
+                                                        <div>
+                                                            <div style="font-weight: 600; color: #3f6212; font-size: 15px;">Brig Barker - Systems Management</div>
+                                                            <div style="font-size: 12px; color: #4d7c0f;">Key Stakeholder</div>
+                                                        </div>
+                                                        <div style="font-size: 11px; color: #84cc16; background: #f7fee7; padding: 4px 10px; border-radius: 12px;">Nov 25, 2025</div>
+                                                    </div>
+                                                    <p style="font-size: 14px; color: #3f6212; line-height: 1.7; margin: 0;">
+                                                        <strong>"Sandeep has been a good partner in helping with Salesforce integrations for the systems we manage."</strong> ... "Sandeep has been very supportive this year as we have implemented Magentrix. He has been a great resource to help scope out any integration questions or asks for the Salesforce integration."
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            
+                                            <div style="margin-top: 30px; padding: 25px; background: rgba(168, 85, 247, 0.1); border-radius: 12px; border: 2px dashed #a855f7;">
+                                                <h4 style="font-size: 16px; font-weight: 600; color: #581c87; margin-bottom: 15px;">🎯 Common Themes Across All Feedback</h4>
+                                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 12px;">
+                                                    <div style="background: white; padding: 15px; border-radius: 8px;">
+                                                        <div style="font-weight: 600; color: #581c87; font-size: 13px; margin-bottom: 5px;">✓ Deep Technical Expertise</div>
+                                                        <div style="font-size: 12px; color: #6b21a8; line-height: 1.6;">"Invaluable," "deep knowledge," "great resource"</div>
+                                                    </div>
+                                                    <div style="background: white; padding: 15px; border-radius: 8px;">
+                                                        <div style="font-weight: 600; color: #581c87; font-size: 13px; margin-bottom: 5px;">✓ Exceptional Responsiveness</div>
+                                                        <div style="font-size: 12px; color: #6b21a8; line-height: 1.6;">"Very responsive," "available," "even during non-working hours"</div>
+                                                    </div>
+                                                    <div style="background: white; padding: 15px; border-radius: 8px;">
+                                                        <div style="font-weight: 600; color: #581c87; font-size: 13px; margin-bottom: 5px;">✓ Rapid Delivery</div>
+                                                        <div style="font-size: 12px; color: #6b21a8; line-height: 1.6;">"Within just a few days," "three days," "on time and in budget"</div>
+                                                    </div>
+                                                    <div style="background: white; padding: 15px; border-radius: 8px;">
+                                                        <div style="font-weight: 600; color: #581c87; font-size: 13px; margin-bottom: 5px;">✓ Business Impact</div>
+                                                        <div style="font-size: 12px; color: #6b21a8; line-height: 1.6;">"Huge impact on workflow," "better customer experience," "saves hours monthly"</div>
+                                                    </div>
+                                                    <div style="background: white; padding: 15px; border-radius: 8px;">
+                                                        <div style="font-weight: 600; color: #581c87; font-size: 13px; margin-bottom: 5px;">✓ Collaboration Excellence</div>
+                                                        <div style="font-size: 12px; color: #6b21a8; line-height: 1.6;">"Collaborative," "actively listened," "asked clarifying questions"</div>
+                                                    </div>
+                                                    <div style="background: white; padding: 15px; border-radius: 8px;">
+                                                        <div style="font-weight: 600; color: #581c87; font-size: 13px; margin-bottom: 5px;">✓ Critical to Organization</div>
+                                                        <div style="font-size: 12px; color: #6b21a8; line-height: 1.6;">"Critical member," "truly lucky to have him," "we need more teams like Sandeep's"</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div style="margin-top: 25px; padding: 20px; background: rgba(168, 85, 247, 0.15); border-radius: 10px; border-left: 4px solid #a855f7;">
+                                                <p style="font-size: 15px; line-height: 1.8; color: #581c87; margin: 0;">
+                                                    <strong>Stakeholder Perspective:</strong> These testimonials represent feedback from 8 different departments (Pricing, Customer Success, Supply Chain, Tax/Finance, SOX Compliance, Analytics, Systems Management, and Direct Reports) - demonstrating the cross-functional impact and trusted business partnerships built across the organization. Notably, multiple stakeholders explicitly stated they could not identify any areas for improvement and described the Principal Architect as "invaluable," "critical," and someone the organization is "truly lucky to have."
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); padding: 35px; border-radius: 15px; border: 2px solid #dc2626; margin-bottom: 40px;">
+                                        <h3 style="font-size: 20px; font-weight: 600; color: #991b1b; margin-bottom: 20px;">🔴 Lessons from Previous Reporting Structure Failure</h3>
+                                        
+                                        <div style="background: white; padding: 25px; border-radius: 12px; margin-bottom: 25px; border-left: 5px solid #dc2626;">
+                                            <h4 style="font-size: 17px; font-weight: 600; color: #991b1b; margin-bottom: 15px;">📊 The Previous QA Structure (Before May 2024)</h4>
+                                            <p style="font-size: 15px; line-height: 1.8; color: #7f1d1d; margin-bottom: 15px;">
+                                                <strong>Reporting Structure:</strong> India-based QA team (5 engineers) reported to US-based Manager
+                                            </p>
+                                            <div style="background: #fef2f2; padding: 20px; border-radius: 8px; margin-bottom: 15px;">
+                                                <div style="font-size: 14px; font-weight: 600; color: #991b1b; margin-bottom: 12px;">DOCUMENTED ISSUES:</div>
+                                                <div style="display: grid; gap: 12px;">
+                                                    <div style="background: white; padding: 12px; border-radius: 6px; border-left: 3px solid #dc2626;">
+                                                        <strong style="color: #dc2626; font-size: 13px;">❌ Quality & Speed Degradation:</strong>
+                                                        <p style="font-size: 13px; color: #7f1d1d; margin: 5px 0 0 0; line-height: 1.6;">
+                                                            Team struggled to deliver with acceptable quality and speed due to management distance and timezone constraints
+                                                        </p>
+                                                    </div>
+                                                    <div style="background: white; padding: 12px; border-radius: 6px; border-left: 3px solid #dc2626;">
+                                                        <strong style="color: #dc2626; font-size: 13px;">❌ Visibility Gaps & Accountability Loss:</strong>
+                                                        <p style="font-size: 13px; color: #7f1d1d; margin: 5px 0 0 0; line-height: 1.6;">
+                                                            Team member worked from London for several months without management knowledge—complete visibility failure
+                                                        </p>
+                                                    </div>
+                                                    <div style="background: white; padding: 12px; border-radius: 6px; border-left: 3px solid #dc2626;">
+                                                        <strong style="color: #dc2626; font-size: 13px;">❌ Non-Performance Without Detection:</strong>
+                                                        <p style="font-size: 13px; color: #7f1d1d; margin: 5px 0 0 0; line-height: 1.6;">
+                                                            Another team member delivered no meaningful work for extended period—undetected due to management distance
+                                                        </p>
+                                                    </div>
+                                                    <div style="background: white; padding: 12px; border-radius: 6px; border-left: 3px solid #dc2626;">
+                                                        <strong style="color: #dc2626; font-size: 13px;">❌ Operational Inefficiencies:</strong>
+                                                        <p style="font-size: 13px; color: #7f1d1d; margin: 5px 0 0 0; line-height: 1.6;">
+                                                            Timezone constraints (9.5-12.5 hour gap) created communication delays, blocked real-time issue resolution, and slowed decision-making
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div style="background: white; padding: 25px; border-radius: 12px; margin-bottom: 25px; border-left: 5px solid #22c55e;">
+                                            <h4 style="font-size: 17px; font-weight: 600; color: #166534; margin-bottom: 15px;">✅ Current Structure (After May 2024)</h4>
+                                            <p style="font-size: 15px; line-height: 1.8; color: #15803d; margin-bottom: 15px;">
+                                                <strong>Reporting Structure:</strong> India-based QA team reports to India-based Principal Architect
+                                            </p>
+                                            <div style="background: #f0fdf4; padding: 20px; border-radius: 8px; margin-bottom: 15px;">
+                                                <div style="font-size: 14px; font-weight: 600; color: #166534; margin-bottom: 12px;">MEASURABLE IMPROVEMENTS:</div>
+                                                <div style="display: grid; gap: 12px;">
+                                                    <div style="background: white; padding: 12px; border-radius: 6px; border-left: 3px solid #22c55e;">
+                                                        <strong style="color: #22c55e; font-size: 13px;">✓ Immediate Issue Identification:</strong>
+                                                        <p style="font-size: 13px; color: #15803d; margin: 5px 0 0 0; line-height: 1.6;">
+                                                            Within weeks, identified location discrepancies, work output gaps, and efficiency issues that went undetected for months
+                                                        </p>
+                                                    </div>
+                                                    <div style="background: white; padding: 12px; border-radius: 6px; border-left: 3px solid #22c55e;">
+                                                        <strong style="color: #22c55e; font-size: 13px;">✓ Quality & Speed Transformation:</strong>
+                                                        <p style="font-size: 13px; color: #15803d; margin: 5px 0 0 0; line-height: 1.6;">
+                                                            QA shifted from bottleneck to enabler. Delivered complete regression automation, 90% code coverage, 1,500+ daily tests
+                                                        </p>
+                                                    </div>
+                                                    <div style="background: white; padding: 12px; border-radius: 6px; border-left: 3px solid #22c55e;">
+                                                        <strong style="color: #22c55e; font-size: 13px;">✓ Real-Time Collaboration:</strong>
+                                                        <p style="font-size: 13px; color: #15803d; margin: 5px 0 0 0; line-height: 1.6;">
+                                                            Same-timezone alignment enabled immediate issue resolution, faster decision-making, and continuous visibility
+                                                        </p>
+                                                    </div>
+                                                    <div style="background: white; padding: 12px; border-radius: 6px; border-left: 3px solid #22c55e;">
+                                                        <strong style="color: #22c55e; font-size: 13px;">✓ Accountability & Performance:</strong>
+                                                        <p style="font-size: 13px; color: #15803d; margin: 5px 0 0 0; line-height: 1.6;">
+                                                            Clear expectations, continuous visibility, and immediate feedback loops eliminated performance gaps
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div style="background: white; padding: 25px; border-radius: 12px; border-left: 5px solid #f59e0b;">
+                                            <h4 style="font-size: 17px; font-weight: 600; color: #92400e; margin-bottom: 15px;">⚠️ Proposed Structure Risk Analysis</h4>
+                                            <p style="font-size: 15px; line-height: 1.8; color: #78350f; margin-bottom: 15px;">
+                                                <strong>Proposed Change:</strong> India-based Technical & QA teams (high-performing, same-timezone) report to US-based Technical Architect
+                                            </p>
+                                            <div style="background: #fffbeb; padding: 20px; border-radius: 8px;">
+                                                <div style="font-size: 14px; font-weight: 600; color: #92400e; margin-bottom: 12px;">PREDICTED ORGANIZATIONAL RISKS:</div>
+                                                <div style="display: grid; gap: 12px;">
+                                                    <div style="background: white; padding: 12px; border-radius: 6px; border-left: 3px solid #f59e0b;">
+                                                        <strong style="color: #f59e0b; font-size: 13px;">⚠️ Repeating Documented Failures:</strong>
+                                                        <p style="font-size: 13px; color: #78350f; margin: 5px 0 0 0; line-height: 1.6;">
+                                                            Returning to same structural issues that caused quality degradation, visibility gaps, and non-performance detection failures
+                                                        </p>
+                                                    </div>
+                                                    <div style="background: white; padding: 12px; border-radius: 6px; border-left: 3px solid #f59e0b;">
+                                                        <strong style="color: #f59e0b; font-size: 13px;">⚠️ Timezone Bottleneck Recreation:</strong>
+                                                        <p style="font-size: 13px; color: #78350f; margin: 5px 0 0 0; line-height: 1.6;">
+                                                            9.5-12.5 hour timezone gap will recreate communication delays, slow issue resolution, and reduce real-time collaboration effectiveness
+                                                        </p>
+                                                    </div>
+                                                    <div style="background: white; padding: 12px; border-radius: 6px; border-left: 3px solid #f59e0b;">
+                                                        <strong style="color: #f59e0b; font-size: 13px;">⚠️ Dismantling High-Performance Team:</strong>
+                                                        <p style="font-size: 13px; color: #78350f; margin: 5px 0 0 0; line-height: 1.6;">
+                                                            Current team delivers 550+ stories, 90% code coverage, complete automation, $1M+ value—shifting to constrained reporting risks this performance level
+                                                        </p>
+                                                    </div>
+                                                    <div style="background: white; padding: 12px; border-radius: 6px; border-left: 3px solid #f59e0b;">
+                                                        <strong style="color: #f59e0b; font-size: 13px;">⚠️ Loss of Institutional Learning:</strong>
+                                                        <p style="font-size: 13px; color: #78350f; margin: 5px 0 0 0; line-height: 1.6;">
+                                                            Organization already learned this lesson with QA—reverting to failed structure suggests institutional memory loss or political override of operational data
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div style="margin-top: 25px; padding: 25px; background: rgba(220, 38, 38, 0.15); border-radius: 12px; border: 2px dashed #dc2626;">
+                                            <h4 style="font-size: 16px; font-weight: 600; color: #991b1b; margin-bottom: 12px;">🔍 Critical Question for Leadership</h4>
+                                            <p style="font-size: 15px; line-height: 1.8; color: #7f1d1d; margin: 0;">
+                                                <strong>We have concrete historical evidence:</strong> When the QA team reported to a US manager, we struggled with quality, speed, visibility, and accountability. When they reported to the India-based Principal Architect, they transformed into a high-performing team delivering automation, 90% coverage, and enabling rather than blocking delivery. 
+                                                <br><br>
+                                                <strong style="color: #dc2626;">Why would we deliberately recreate a reporting structure that has already proven to cause operational failures?</strong> Is this decision based on data and organizational effectiveness, or on other considerations that override documented evidence of what works?
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); padding: 35px; border-radius: 15px; border: 2px solid #ef4444; margin-bottom: 40px;">
+                                    <h3 style="font-size: 20px; font-weight: 600; color: #991b1b; margin-bottom: 20px;">⚠️ Exceptional Results Despite Systematic Under-Utilization</h3>
+                                    
+                                    <div style="background: white; padding: 25px; border-radius: 12px; margin-bottom: 20px; border-left: 5px solid #ef4444;">
+                                        <h4 style="font-size: 17px; font-weight: 600; color: #991b1b; margin-bottom: 15px;">The Capacity Challenge</h4>
+                                        <p style="font-size: 15px; line-height: 1.8; color: #7f1d1d; margin-bottom: 15px;">
+                                            Throughout the majority of the year, the Principal Architect consistently struggled to obtain sufficient work to fully utilize team capacity. Despite this chronic under-utilization and eventual QA team reduction from 5 engineers to 1, the team delivered:
+                                        </p>
+                                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin: 20px 0;">
+                                            <div style="background: #fef2f2; padding: 15px; border-radius: 8px; text-align: center;">
+                                                <div style="font-size: 32px; font-weight: bold; color: #ef4444;">550+</div>
+                                                <div style="font-size: 13px; color: #991b1b;">Business User Stories</div>
+                                            </div>
+                                            <div style="background: #fef2f2; padding: 15px; border-radius: 8px; text-align: center;">
+                                                <div style="font-size: 32px; font-weight: bold; color: #ef4444;">8</div>
+                                                <div style="font-size: 13px; color: #991b1b;">Proactive POCs</div>
+                                            </div>
+                                            <div style="background: #fef2f2; padding: 15px; border-radius: 8px; text-align: center;">
+                                                <div style="font-size: 32px; font-weight: bold; color: #ef4444;">4</div>
+                                                <div style="font-size: 13px; color: #991b1b;">Platform Transformations</div>
+                                            </div>
+                                            <div style="background: #fef2f2; padding: 15px; border-radius: 8px; text-align: center;">
+                                                <div style="font-size: 32px; font-weight: bold; color: #ef4444;">$1M+</div>
+                                                <div style="font-size: 13px; color: #991b1b;">Business Value Created</div>
+                                            </div>
+                                        </div>
+                                        <p style="font-size: 15px; line-height: 1.8; color: #7f1d1d; margin-top: 15px;">
+                                            <strong>Key Insight:</strong> Rather than allowing team idle time, the Principal Architect proactively identified business gaps, designed solutions, and filled capacity with high-impact POCs and platform improvements—all without formal requirements or business requests.
+                                        </p>
+                                    </div>
+                                    
+                                    <div style="background: white; padding: 25px; border-radius: 12px; margin-bottom: 20px; border-left: 5px solid #f59e0b;">
+                                        <h4 style="font-size: 17px; font-weight: 600; color: #92400e; margin-bottom: 15px;">Leadership Philosophy & Team Advocacy</h4>
+                                        <div style="display: grid; gap: 12px;">
+                                            <div style="background: #fffbeb; padding: 15px; border-radius: 8px;">
+                                                <strong style="color: #92400e; font-size: 14px;">🛡️ Unwavering Team Support:</strong>
+                                                <p style="font-size: 14px; color: #78350f; margin: 8px 0 0 0; line-height: 1.7;">
+                                                    Always stood by the team, providing advocacy, support, and protection. Created an environment where team members felt valued and empowered to deliver their best work.
+                                                </p>
+                                            </div>
+                                            <div style="background: #fffbeb; padding: 15px; border-radius: 8px;">
+                                                <strong style="color: #92400e; font-size: 14px;">⚡ Process Excellence:</strong>
+                                                <p style="font-size: 14px; color: #78350f; margin: 8px 0 0 0; line-height: 1.7;">
+                                                    Developed and refined processes that enabled the team to perform at maximum potential with the right amount of work. No flaws in Design, Development, Delivery, or Quality—every aspect optimized for success.
+                                                </p>
+                                            </div>
+                                            <div style="background: #fffbeb; padding: 15px; border-radius: 8px;">
+                                                <strong style="color: #92400e; font-size: 14px;">🎯 Proactive Gap Filling:</strong>
+                                                <p style="font-size: 14px; color: #78350f; margin: 8px 0 0 0; line-height: 1.7;">
+                                                    When business priorities didn't provide sufficient work, proactively identified operational gaps and delivered solutions that generated significant business value—turning resource constraints into innovation opportunities.
+                                                </p>
+                                            </div>
+                                            <div style="background: #fffbeb; padding: 15px; border-radius: 8px;">
+                                                <strong style="color: #92400e; font-size: 14px;">📊 Results Through Adversity:</strong>
+                                                <p style="font-size: 14px; color: #78350f; margin: 8px 0 0 0; line-height: 1.7;">
+                                                    Even after QA team reduction from 5 to 1 engineer, maintained delivery excellence while simultaneously implementing complete regression automation, platform health improvements, and legacy migrations.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div style="background: white; padding: 25px; border-radius: 12px; border-left: 5px solid #8b5cf6;">
+                                        <h4 style="font-size: 17px; font-weight: 600; color: #6b21a8; margin-bottom: 15px;">💪 What This Demonstrates</h4>
+                                        <ul style="margin: 0; padding-left: 20px;">
+                                            <li style="font-size: 14px; line-height: 1.8; color: #6b21a8; margin-bottom: 10px;">
+                                                <strong>Resourcefulness:</strong> Converted under-utilization into opportunity, generating $1M+ value without additional budget
+                                            </li>
+                                            <li style="font-size: 14px; line-height: 1.8; color: #6b21a8; margin-bottom: 10px;">
+                                                <strong>Business Acumen:</strong> Identified gaps the business hadn't yet recognized and delivered solutions proactively
+                                            </li>
+                                            <li style="font-size: 14px; line-height: 1.8; color: #6b21a8; margin-bottom: 10px;">
+                                                <strong>Team Leadership:</strong> Maintained team morale and productivity through uncertain capacity planning and staffing reductions
+                                            </li>
+                                            <li style="font-size: 14px; line-height: 1.8; color: #6b21a8; margin-bottom: 10px;">
+                                                <strong>Process Maturity:</strong> Built systems that enable exceptional delivery regardless of workload fluctuations
+                                            </li>
+                                            <li style="font-size: 14px; line-height: 1.8; color: #6b21a8;">
+                                                <strong>Accountability:</strong> Never blamed gaps in capacity planning—instead, delivered solutions that proved indispensable
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div style="margin-top: 25px; padding: 25px; background: rgba(239, 68, 68, 0.1); border-radius: 12px; border: 2px dashed #ef4444;">
+                                        <p style="font-size: 15px; line-height: 1.8; color: #991b1b; margin: 0;">
+                                            <strong>Critical Leadership Reflection:</strong> "I feel very proud of what we have achieved. The team delivered not just business priorities but transformational POCs and platform improvements—all while navigating chronic under-utilization, staffing reductions, and capacity constraints. No flaws in Design, Development, Delivery, or Quality. We built processes that enable maximum team potential and I always stood by them. This is leadership under pressure delivering exceptional outcomes." <strong style="color: #dc2626;">All of this was accomplished in 12 months (2025 calendar year), not over multiple years.</strong>
+                                        </p>
+                                    </div>
+                                </div>
+                                
+                                <!-- ============================================================================ -->
+                                <!-- PASTE THIS SECTION INTO YOUR EXISTING HTML PRESENTATION                    -->
+                                <!-- LOCATION: After "Section 5: Leadership Under Constraints"                  -->
+                                <!--           Before "Section 6: Organizational Risks"                          -->
+                                <!-- ============================================================================ -->
+                                
+                                <!-- NEW SECTION: Dedication, Transformation & Career Context -->
+                                <div class="comparison-section">
+                                    <h2 class="section-title">Dedication, Transformative Vision & Career Excellence</h2>
+                                    <div style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); padding: 35px; border-radius: 15px; border: 2px solid #0ea5e9; margin-bottom: 40px;">
+                                        <h3 style="font-size: 20px; font-weight: 600; color: #0c4a6e; margin-bottom: 20px;">🌟 Operating with Purpose: Devotion to Organizational Success</h3>
+                                        
+                                        <div style="background: white; padding: 25px; border-radius: 12px; margin-bottom: 20px; border-left: 5px solid #0ea5e9;">
+                                            <h4 style="font-size: 17px; font-weight: 600; color: #0c4a6e; margin-bottom: 15px;">💙 Personal Commitment Across Timezones</h4>
+                                            <p style="font-size: 15px; line-height: 1.8; color: #0369a1; margin-bottom: 15px;">
+                                                All achievements in this presentation were delivered while operating from India, <strong>happily working late nights and early mornings to maintain alignment with US stakeholders</strong> because of deep devotion to organizational success.
+                                            </p>
+                                            <div style="display: grid; gap: 12px; margin-top: 15px;">
+                                                <div style="background: #f0f9ff; padding: 15px; border-radius: 8px;">
+                                                    <strong style="color: #0c4a6e; font-size: 14px;">🌍 Embraced Timezone Challenges:</strong>
+                                                    <p style="font-size: 14px; color: #0369a1; margin: 8px 0 0 0; line-height: 1.7;">
+                                                        Despite 9.5-12.5 hour time difference, consistently made myself available during US business hours (India evenings/nights) because building strong stakeholder partnerships and delivering excellence was the priority. This wasn't a burden—it was a choice driven by commitment to the organization's mission.
+                                                    </p>
+                                                </div>
+                                                <div style="background: #f0f9ff; padding: 15px; border-radius: 8px;">
+                                                    <strong style="color: #0c4a6e; font-size: 14px;">🤝 Deep Stakeholder Devotion:</strong>
+                                                    <p style="font-size: 14px; color: #0369a1; margin: 8px 0 0 0; line-height: 1.7;">
+                                                        Proactively stayed available to ensure real-time collaboration with Pricing, Customer Success, Finance, Supply Chain, SOX Compliance, and other critical departments. The relationships built and testimonials received (8 departments describing work as "invaluable," "critical") reflect this dedication to partnership and excellence.
+                                                    </p>
+                                                </div>
+                                                <div style="background: #f0f9ff; padding: 15px; border-radius: 8px;">
+                                                    <strong style="color: #0c4a6e; font-size: 14px;">💪 Unwavering Commitment:</strong>
+                                                    <p style="font-size: 14px; color: #0369a1; margin: 8px 0 0 0; line-height: 1.7;">
+                                                        Never viewed timezone challenges or extended hours as obstacles—saw them as opportunities to demonstrate commitment and deliver exceptional value. This devotion enabled the $1M+ impact achieved across 14 business areas in 2025 alone.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div style="background: white; padding: 25px; border-radius: 12px; margin-bottom: 20px; border-left: 5px solid #10b981;">
+                                            <h4 style="font-size: 17px; font-weight: 600; color: #166534; margin-bottom: 15px;">📈 2025: Just One Chapter in Years of Transformation</h4>
+                                            <p style="font-size: 15px; line-height: 1.8; color: #15803d; margin-bottom: 15px;">
+                                                <strong>The $1M+ value, 550+ deliveries, and 11 proactive innovations documented in this presentation represent just 2025.</strong> The transformation story spans 3.4 years at this organization and a 12-year career of consistent excellence.
+                                            </p>
+                                            <div style="background: #f0fdf4; padding: 20px; border-radius: 8px; margin-top: 15px;">
+                                                <div style="font-size: 14px; font-weight: 600; color: #166534; margin-bottom: 12px;">📊 Multi-Year Transformation Journey:</div>
+                                                <ul style="margin-left: 20px; padding-left: 0;">
+                                                    <li style="font-size: 14px; line-height: 1.8; color: #15803d; margin-bottom: 10px;">
+                                                        <strong>August 2021:</strong> Joined as Senior Technical Architect, began building technical foundation
+                                                    </li>
+                                                    <li style="font-size: 14px; line-height: 1.8; color: #15803d; margin-bottom: 10px;">
+                                                        <strong>2022-2023:</strong> Established architecture patterns, built stakeholder trust, delivered business-critical initiatives
+                                                    </li>
+                                                    <li style="font-size: 14px; line-height: 1.8; color: #15803d; margin-bottom: 10px;">
+                                                        <strong>April 2024:</strong> Promoted to Principal Architect, officially recognized as Technical Team Lead
+                                                    </li>
+                                                    <li style="font-size: 14px; line-height: 1.8; color: #15803d; margin-bottom: 10px;">
+                                                        <strong>May 2024:</strong> Took ownership of QA, transformed from bottleneck to enabler
+                                                    </li>
+                                                    <li style="font-size: 14px; line-height: 1.8; color: #15803d; margin-bottom: 10px;">
+                                                        <strong>2025:</strong> Delivered transformational impact documented in this presentation
+                                                    </li>
+                                                </ul>
+                                                <p style="font-size: 14px; color: #15803d; margin-top: 15px; font-style: italic;">
+                                                    <strong>Each year built upon the previous foundation—this is compound organizational impact, not isolated achievement.</strong>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div style="background: white; padding: 25px; border-radius: 12px; margin-bottom: 20px; border-left: 5px solid #8b5cf6;">
+                                            <h4 style="font-size: 17px; font-weight: 600; color: #6b21a8; margin-bottom: 15px;">🎯 Transformative Vision: 12-Year Career of Excellence</h4>
+                                            <p style="font-size: 15px; line-height: 1.8; color: #6b21a8; margin-bottom: 15px;">
+                                                This organization represents one chapter in a 12-year career characterized by transformative vision and consistently exceptional stakeholder feedback across every role.
+                                            </p>
+                                            <div style="display: grid; gap: 12px; margin-top: 15px;">
+                                                <div style="background: #faf5ff; padding: 15px; border-radius: 8px;">
+                                                    <strong style="color: #6b21a8; font-size: 14px;">🌟 12 Years of Consistent Excellence:</strong>
+                                                    <p style="font-size: 14px; color: #6b21a8; margin: 8px 0 0 0; line-height: 1.7;">
+                                                        Throughout entire career spanning 12 years across multiple organizations and roles, consistently received exceptional feedback from stakeholders, managers, and business partners. Pattern of building transformative solutions, strong partnerships, and delivering measurable business value.
+                                                    </p>
+                                                </div>
+                                                <div style="background: #faf5ff; padding: 15px; border-radius: 8px;">
+                                                    <strong style="color: #6b21a8; font-size: 14px;">💡 Transformative Vision:</strong>
+                                                    <p style="font-size: 14px; color: #6b21a8; margin: 8px 0 0 0; line-height: 1.7;">
+                                                        Natural ability to see beyond current state and proactively identify opportunities for transformation. The 11 self-initiated POCs in 2025 alone demonstrate this vision—identifying business gaps before they're articulated and delivering solutions that generate significant value ($1M+).
+                                                    </p>
+                                                </div>
+                                                <div style="background: #faf5ff; padding: 15px; border-radius: 8px;">
+                                                    <strong style="color: #6b21a8; font-size: 14px;">📋 Universally Positive Feedback:</strong>
+                                                    <p style="font-size: 14px; color: #6b21a8; margin: 8px 0 0 0; line-height: 1.7;">
+                                                        Current manager (Shellene McKendrick) has consistently provided very positive feedback. December 2025 stakeholder testimonials from 8 departments describe work as "invaluable," "critical," someone organization is "truly lucky to have." This aligns with feedback patterns throughout 12-year career.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div style="background: white; padding: 25px; border-radius: 12px; border-left: 5px solid #f59e0b;">
+                                            <h4 style="font-size: 17px; font-weight: 600; color: #92400e; margin-bottom: 15px;">🆕 First Time in 12-Year Career</h4>
+                                            <div style="background: #fffbeb; padding: 20px; border-radius: 8px; margin-bottom: 15px;">
+                                                <p style="font-size: 15px; line-height: 1.8; color: #78350f; margin-bottom: 12px;">
+                                                    <strong>This is the first time in a 12-year career experiencing a significant organizational change without prior discussion, feedback indicating areas for improvement, or explanation of reasoning.</strong>
+                                                </p>
+                                                <p style="font-size: 15px; line-height: 1.8; color: #78350f; margin-bottom: 12px;">
+                                                    Throughout career across multiple organizations:
+                                                </p>
+                                                <ul style="margin-left: 20px; padding-left: 0;">
+                                                    <li style="font-size: 14px; line-height: 1.7; color: #78350f; margin-bottom: 8px;">
+                                                        Career progression has always aligned with performance and impact
+                                                    </li>
+                                                    <li style="font-size: 14px; line-height: 1.7; color: #78350f; margin-bottom: 8px;">
+                                                        Managers have consistently provided clear feedback enabling growth
+                                                    </li>
+                                                    <li style="font-size: 14px; line-height: 1.7; color: #78350f; margin-bottom: 8px;">
+                                                        Organizational changes have been transparent and discussed
+                                                    </li>
+                                                    <li style="font-size: 14px; line-height: 1.7; color: #78350f; margin-bottom: 8px;">
+                                                        Professional trajectory has reflected contributions and value delivered
+                                                    </li>
+                                                </ul>
+                                                <p style="font-size: 15px; line-height: 1.8; color: #78350f; margin-top: 15px;">
+                                                    <strong>The current situation represents an unprecedented departure from 12 years of transparent, merit-based career progression.</strong>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div style="margin-top: 25px; padding: 25px; background: rgba(14, 165, 233, 0.15); border-radius: 12px; border: 2px dashed #0ea5e9;">
+                                            <h4 style="font-size: 16px; font-weight: 600; color: #0c4a6e; margin-bottom: 12px;">💙 Reflection on Dedication & Impact</h4>
+                                            <p style="font-size: 15px; line-height: 1.8; color: #0369a1; margin: 0;">
+                                                <strong>This presentation documents just 2025—one year of transformative impact delivered with deep devotion to organizational success.</strong>
+                                                <br><br>
+                                                The full story spans:
+                                            </p>
+                                            <ul style="margin: 15px 0 15px 20px; padding-left: 0;">
+                                                <li style="font-size: 14px; line-height: 1.7; color: #0369a1; margin-bottom: 8px;">3.4 years of building technical foundation and business partnerships at this organization</li>
+                                                <li style="font-size: 14px; line-height: 1.7; color: #0369a1; margin-bottom: 8px;">12 years of transformative vision and consistently exceptional stakeholder feedback across career</li>
+                                                <li style="font-size: 14px; line-height: 1.7; color: #0369a1; margin-bottom: 8px;">Countless late nights happily working across timezones because of commitment to excellence</li>
+                                                <li style="font-size: 14px; line-height: 1.7; color: #0369a1; margin-bottom: 8px;">Never-ending drive to proactively identify opportunities and deliver value</li>
+                                            </ul>
+                                            <p style="font-size: 15px; line-height: 1.8; color: #0369a1; margin-top: 15px;">
+                                                <strong style="color: #0c4a6e;">Request: That decisions about organizational structure reflect the documented pattern of dedication, transformation, and measurable business impact rather than factors disconnected from performance and value delivered.</strong>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); padding: 35px; border-radius: 15px; border: 2px solid #0ea5e9; margin-bottom: 30px;">
+                                <h3 style="font-size: 20px; font-weight: 600; color: #0c4a6e; margin-bottom: 20px;">Principal Architect (Sandeep Kumar) - Impact Highlights</h3>
+                                
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 25px;">
+                                    <div style="background: white; padding: 20px; border-radius: 10px; border-left: 4px solid #0ea5e9;">
+                                        <div style="font-size: 32px; font-weight: bold; color: #0ea5e9; margin-bottom: 5px;">550+</div>
+                                        <div style="font-size: 14px; color: #64748b;">User Stories Delivered</div>
+                                    </div>
+                                    <div style="background: white; padding: 20px; border-radius: 10px; border-left: 4px solid #10b981;">
+                                        <div style="font-size: 32px; font-weight: bold; color: #10b981; margin-bottom: 5px;">$800K</div>
+                                        <div style="font-size: 14px; color: #64748b;">ARR Protected via Automation</div>
+                                    </div>
+                                    <div style="background: white; padding: 20px; border-radius: 10px; border-left: 4px solid #8b5cf6;">
+                                        <div style="font-size: 32px; font-weight: bold; color: #8b5cf6; margin-bottom: 5px;">16</div>
+                                        <div style="font-size: 14px; color: #64748b;">APIs (3 weeks vs 1+ year)</div>
+                                    </div>
+                                    <div style="background: white; padding: 20px; border-radius: 10px; border-left: 4px solid #f59e0b;">
+                                        <div style="font-size: 32px; font-weight: bold; color: #f59e0b; margin-bottom: 5px;">4 min</div>
+                                        <div style="font-size: 14px; color: #64748b;">Quote-to-Close Time</div>
+                                    </div>
+                                </div>
+                                
+                                <div style="margin-top: 25px;">
+                                    <h4 style="font-size: 16px; font-weight: 600; color: #0c4a6e; margin-bottom: 15px;">Proactive Business Innovations (Self-Initiated, No Formal Requirements)</h4>
+                                    <p style="font-size: 13px; color: #0c4a6e; margin-bottom: 15px; line-height: 1.6;">
+                                        All initiatives designed, architected, and delivered under Principal Architect's leadership and direct contribution:
+                                    </p>
+                                    <div style="display: grid; gap: 12px;">
+                                        <div style="background: white; padding: 15px; border-radius: 8px; font-size: 14px; color: #334155;">
+                                            <strong style="color: #0ea5e9;">💡 Price Increase Automation:</strong> Eliminated manual, error-prone process that caused $800K ARR loss. Now runs autonomously in minutes with full business visibility.
+                                        </div>
+                                        <div style="background: white; padding: 15px; border-radius: 8px; font-size: 14px; color: #334155;">
+                                            <strong style="color: #10b981;">💡 Quick Quote Redesign:</strong> Proactively created 4-minute end-to-end quoting experience for Events team, dramatically improving sales velocity.
+                                        </div>
+                                        <div style="background: white; padding: 15px; border-radius: 8px; font-size: 14px; color: #334155;">
+                                            <strong style="color: #8b5cf6;">💡 Consolidated Billing Solution:</strong> Self-initiated design eliminating extensive manual billing effort with point-and-click configuration.
+                                        </div>
+                                        <div style="background: white; padding: 15px; border-radius: 8px; font-size: 14px; color: #334155;">
+                                            <strong style="color: #f59e0b;">💡 Custom Integration Framework:</strong> Proactively built scalable Sage Intacct integration delivering 16 APIs in 3 weeks (vs MuleSoft's 1+ year), reducing costs by ~$200K annually and eliminating contractor dependency.
+                                        </div>
+                                        <div style="background: white; padding: 15px; border-radius: 8px; font-size: 14px; color: #334155;">
+                                            <strong style="color: #ec4899;">💡 Single-Click Cancellation:</strong> Replaced lengthy manual workflow, significantly reducing operational effort and turnaround time.
+                                        </div>
+                                        <div style="background: white; padding: 15px; border-radius: 8px; font-size: 14px; color: #334155;">
+                                            <strong style="color: #06b6d4;">💡 SoX User Audit Process:</strong> Designed and implemented automated quarterly compliance audits with cross-system integration capability.
+                                        </div>
+                                        <div style="background: white; padding: 15px; border-radius: 8px; font-size: 14px; color: #334155;">
+                                            <strong style="color: #22c55e;">💡 Employee Access Management:</strong> Initiated POC for automated system access provisioning with Workday integration and approval workflows.
+                                        </div>
+                                        <div style="background: white; padding: 15px; border-radius: 8px; font-size: 14px; color: #334155;">
+                                            <strong style="color: #a855f7;">💡 Billing Overview Dashboard:</strong> Proactively delivered comprehensive customer billing visibility, elevating user experience across the organization.
+                                        </div>
+                                        <div style="background: white; padding: 15px; border-radius: 8px; font-size: 14px; color: #334155; border-left: 3px solid #3b82f6;">
+                                            <strong style="color: #3b82f6;">💡 Automated Regression Suite (Lead-to-Cash):</strong> Proactively initiated and led complete end-to-end automated regression covering all responsibility areas. Transformed QA from manual to fully automated validation framework executing in 33-35 minutes daily.
+                                        </div>
+                                        <div style="background: white; padding: 15px; border-radius: 8px; font-size: 14px; color: #334155; border-left: 3px solid #14b8a6;">
+                                            <strong style="color: #14b8a6;">💡 Apex Test Coverage Excellence:</strong> Proactively refactored all Apex test classes, achieving 90-100% coverage as organizational standard. Org health demonstrates 84.73% code utilization from 6,000,000 characters—massive achievement showcasing platform health and technical excellence.
+                                        </div>
+                                        <div style="background: white; padding: 15px; border-radius: 8px; font-size: 14px; color: #334155; border-left: 3px solid #f97316;">
+                                            <strong style="color: #f97316;">💡 Legacy Automation Migration:</strong> Proactively initiated and led as Leader the complete migration from Process Builders and Workflow Rules to latest Salesforce automation capabilities (Flows). Modernized entire automation stack (200+ automations) with zero business disruption.
+                                        </div>
+                                        <div style="background: white; padding: 15px; border-radius: 8px; font-size: 14px; color: #334155; border-left: 3px solid #3b82f6;">
+                                            <strong style="color: #3b82f6;">💡 Automated Regression Suite (Lead-to-Cash):</strong> Proactively initiated and led complete end-to-end automated regression covering all areas of responsibility. Transformed QA from manual to fully automated validation framework executing in 33-35 minutes daily.
+                                            <a href="ADD_YOUR_DEMO_URL_HERE" target="_blank" style="margin-left: 10px; color: #3b82f6; text-decoration: none; font-weight: 600;">📹 View Demo</a>
+                                        </div>
+                                        <div style="background: white; padding: 15px; border-radius: 8px; font-size: 14px; color: #334155; border-left: 3px solid #14b8a6;">
+                                            <strong style="color: #14b8a6;">💡 Apex Test Coverage Excellence:</strong> Proactively refactored all Apex test classes, achieving 90-100% coverage as organizational standard. Org health demonstrates 84.73% code utilization from 6,000,000 characters—massive achievement showcasing platform health and technical excellence.
+                                            <a href="ADD_YOUR_DEMO_URL_HERE" target="_blank" style="margin-left: 10px; color: #14b8a6; text-decoration: none; font-weight: 600;">📹 View Demo</a>
+                                        </div>
+                                        <div style="background: white; padding: 15px; border-radius: 8px; font-size: 14px; color: #334155; border-left: 3px solid #f97316;">
+                                            <strong style="color: #f97316;">💡 Legacy Automation Migration:</strong> Proactively initiated and led as Leader the complete migration from Process Builders and Workflow Rules to latest Salesforce automation capabilities (Flows). Modernized entire automation stack (200+ automations) with zero business disruption.
+                                            <a href="ADD_YOUR_DEMO_URL_HERE" target="_blank" style="margin-left: 10px; color: #f97316; text-decoration: none; font-weight: 600;">📹 View Demo</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div style="margin-top: 25px; padding: 25px; background: rgba(14, 165, 233, 0.1); border-radius: 10px;">
+                                    <p style="font-size: 15px; line-height: 1.7; color: #0c4a6e; margin: 0;">
+                                        <strong>Key Insight:</strong> This level of proactive business problem-solving, cross-functional acumen, and autonomous innovation requires deep understanding of business operations across multiple domains. These contributions were delivered without formal requirements in a single calendar year (2025), demonstrating the strategic value of enterprise-wide platform visibility and business partnership across 14 areas. <strong style="color: #0ea5e9;">This is 12 months of leadership impact, not multi-year accumulation.</strong>
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            
+                        </div>
+                        <div style="background: linear-gradient(135deg, #e6fffa 0%, #b2f5ea 100%); padding: 30px; border-radius: 15px; border: 2px solid #38b2ac;">
+                            <p style="font-size: 16px; line-height: 1.8; color: #2d3748; margin-bottom: 15px;">
+                                <strong>Option 1:</strong> Maintain separate reporting lines based on scope of responsibility, where both architects report to a common technical leadership role.
+                            </p>
+                            <p style="font-size: 16px; line-height: 1.8; color: #2d3748; margin-bottom: 15px;">
+                                <strong>Option 2:</strong> Create a proper Principal Architect → Technical Architect hierarchy that aligns with scope and expertise.
+                            </p>
+                            <p style="font-size: 16px; line-height: 1.8; color: #2d3748;">
+                                <strong>Option 3:</strong> Define clear domain boundaries where each architect has autonomous decision-making authority within their respective areas.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </body>
+    </html>
